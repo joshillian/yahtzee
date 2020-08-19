@@ -171,4 +171,5 @@ defmodule YahtzeeTest do
       assert Yahtzee.score(:full_house, [5, 5, 2, 2, 2]) == 16
     end
   end
+
 end

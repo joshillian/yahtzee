@@ -1,6 +1,5 @@
 defmodule Yahtzee do
   @moduledoc """
-  Documentation for `Yahtzee`.
   Documentation for module used to score Yahtzee
   """
 

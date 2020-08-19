@@ -1,21 +1,14 @@
 # Yahtzee
 
-**TODO: Add description**
+** This is my take on a Yahtzee scoring kata as proposed by @samjonester
+   here: https://github.com/samjonester/awesome-katas/blob/master/katas/yahtzee.md**
+   
+   The intent of this project is to serve as an introduction to writing Elixir code.
 
-## Installation
-
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `yahtzee` to your list of dependencies in `mix.exs`:
-
+## Execution
+  
 ```elixir
-def deps do
-  [
-    {:yahtzee, "~> 0.1.0"}
-  ]
-end
+  mix test
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/yahtzee](https://hexdocs.pm/yahtzee).
 
