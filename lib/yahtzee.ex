@@ -16,12 +16,13 @@ defmodule Yahtzee do
       12
   """
   @default_map %{6 => 0, 5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0}
-
+  @spec score(atom, list(integer)) :: integer
   def score(:chance, dice) do Enum.sum(dice) end
 
   def score(:yahtzee, dice) do
     if Enum.all?(dice, fn e -> List.first(dice) == e end), do: 50, else: 0
   end
+
 
   def score(:sixes, dice) do score_singles(6, dice) end
   def score(:fives, dice) do score_singles(5, dice) end
@@ -88,11 +89,15 @@ defmodule Yahtzee do
     end)
   end
 
+  @spec tally(list(integer)) :: map
   defp tally(dice) do
     Map.merge(@default_map, Enum.frequencies(dice))
   end
 
+  @spec score_singles(atom, list(integer)) :: integer
   defp score_singles(num, dice) do
-    Map.merge(@default_map, Enum.frequencies(dice))[num] * num
+    dice
+    |> Enum.filter(& &1 == num)
+    |> Enum.sum
   end
 end
