@@ -1,79 +1,99 @@
 defmodule Yahtzee do
   @moduledoc """
   Documentation for `Yahtzee`.
+  Documentation for module used to score Yahtzee
   """
 
   @doc """
-  Hello world.
+  Scoring dice rolls per category of roll (i.e. yahtzee, chance)
 
   ## Examples
 
-      iex> Yahtzee.hello()
-      :world
-
+      iex> Yahtzee.score(:chance, [1,2,3,4,5])
+      15
+      iex> Yahtzee.score(:yahtzee, [2,2,2,2,2])
+      50
+      iex> Yahtzee.score(:sixes, [1,6,2,6,3])
+      12
   """
-  @default_map  %{6 => 0,5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0}
-  #HA - rolling is not needed, read the instructions brah
-  def roll_dice do
-    :rand.uniform(6)
-  end
+  @default_map %{6 => 0, 5 => 0, 4 => 0, 3 => 0, 2 => 0, 1 => 0}
 
-  def roll do
-    Enum.map(0..4, fn _ -> roll_dice end) #TODO, named function
-    |> Enum.sort(:desc)
-  end
-
-  def score(:chance, dice) do
-    Enum.sum(dice)
-  end
+  def score(:chance, dice) do Enum.sum(dice) end
 
   def score(:yahtzee, dice) do
     if Enum.all?(dice, fn e -> List.first(dice) == e end), do: 50, else: 0
   end
 
-
-
-  def score(:sixes,dice)  do score_singles(6,dice) end
-  def score(:fives,dice)  do score_singles(5,dice) end
-  def score(:fours,dice)  do score_singles(4,dice) end
-  def score(:threes,dice) do score_singles(3,dice) end
-  def score(:twos,dice)   do score_singles(2,dice) end
-  def score(:ones,dice)   do score_singles(1,dice) end
+  def score(:sixes, dice) do score_singles(6, dice) end
+  def score(:fives, dice) do score_singles(5, dice) end
+  def score(:fours, dice) do score_singles(4, dice) end
+  def score(:threes, dice) do score_singles(3, dice) end
+  def score(:twos, dice) do score_singles(2, dice) end
+  def score(:ones, dice) do score_singles(1, dice) end
 
   def score(:pair, dice) do
-
+    pairs = Enum.filter(tally(dice), fn {_, v} -> v == 2 end)
+    cond do
+      Enum.empty?(pairs) ->
+        0
+      true ->
+        max_pair = Enum.max_by(pairs, fn {k, _} -> k end)
+        elem(max_pair, 0) * 2
+    end
   end
 
   def score(:two_pairs, dice) do
-
+    pairs = Enum.filter(tally(dice), fn {_, v} -> v == 2 end)
+    if length(pairs) == 2 do
+      Enum.reduce(pairs, 0, fn {k, v}, acc -> k * v + acc end)
+    else
+      0
+    end
   end
 
-  def score(:three_of_a_kind, dice) do #sum the three end
-    0
-  end
-
-  def score(:four_of_a_kind, dice) do #TODO this is broke end; #sum the four
+  def score(:three_of_a_kind, dice) do
     dice
-    |> Enum.sort
-    |> List.delete_at(4)
-    |> IO.inspect
-    if Enum.all?(dice, fn e -> List.first(dice) == e end), do: Enum.sum(dice), else: 0
+    |> tally
+    |> Enum.reduce(0, fn {k, v}, acc -> if v == 3, do: k * v + acc, else: acc end)
   end
 
+  def score(:four_of_a_kind, dice) do
+    dice
+    |> tally
+    |> Enum.reduce(0, fn {k, v}, acc -> if v == 4, do: k * v + acc, else: acc end)
+  end
 
-  def score(:small_straight,  [1,2,3,4,5]) do 15 end
-  def score(:small_straight, _) do 0 end
-  def score(:large_straight, [2,3,4,5,6]) do  20 end
-  def score(:large_straight, _) do 0 end
+  def score(:small_straight, dice) do
+    case Enum.sort(dice) do
+      [1, 2, 3, 4, 5] -> 15
+      _ -> 0
+    end
+  end
+
+  def score(:large_straight, dice) do
+    case Enum.sort(dice) do
+     [2, 3, 4, 5, 6] -> 20
+      _ -> 0
+    end
+  end
 
   def score(:full_house, dice) do
-
+    dice
+    |> tally
+    |> Enum.reduce(0, fn {k, v}, acc ->
+      case v do
+        3 -> k * v + acc
+        2 -> k * v + acc
+        _ -> acc
+      end
+    end)
   end
 
-
-  defp score_singles(num,dice) do
-    Map.merge(@default_map,Enum.frequencies(dice))[num] * num
+  defp tally(dice) do
+    Map.merge(@default_map, Enum.frequencies(dice))
   end
 
-
+  defp score_singles(num, dice) do
+    Map.merge(@default_map, Enum.frequencies(dice))[num] * num
+  end
 end
