@@ -44,61 +44,61 @@ defmodule YahtzeeTest do
 
   describe "score/2 - sixes" do
     test "return 0" do
-      assert Yahtzee.score(:sixes, [5, 2, 3, 4, 1]) == 0
+      assert Yahtzee.score(6, [5, 2, 3, 4, 1]) == 0
     end
 
     test "calculate" do
-      assert Yahtzee.score(:sixes, [6, 6, 2, 2, 2]) == 12
+      assert Yahtzee.score(6, [6, 6, 2, 2, 2]) == 12
     end
   end
 
   describe "score/2 - fives" do
     test "return 0" do
-      assert Yahtzee.score(:fives, [6, 2, 3, 4, 1]) == 0
+      assert Yahtzee.score(5, [6, 2, 3, 4, 1]) == 0
     end
 
     test "calculate" do
-      assert Yahtzee.score(:fives, [5, 5, 5, 2, 2]) == 15
+      assert Yahtzee.score(5, [5, 5, 5, 2, 2]) == 15
     end
   end
 
   describe "score/2 - fours" do
     test "return 0" do
-      assert Yahtzee.score(:fours, [6, 2, 3, 2, 1]) == 0
+      assert Yahtzee.score(4, [6, 2, 3, 2, 1]) == 0
     end
 
     test "calculate" do
-      assert Yahtzee.score(:fours, [4, 4, 4, 2, 2]) == 12
+      assert Yahtzee.score(4, [4, 4, 4, 2, 2]) == 12
     end
   end
 
   describe "score/2 - threes" do
     test "return 0" do
-      assert Yahtzee.score(:threes, [6, 2, 4, 2, 1]) == 0
+      assert Yahtzee.score(3, [6, 2, 4, 2, 1]) == 0
     end
 
     test "calculate" do
-      assert Yahtzee.score(:threes, [3, 3, 3, 2, 2]) == 9
+      assert Yahtzee.score(3, [3, 3, 3, 2, 2]) == 9
     end
   end
 
   describe "score/2 - twos" do
     test "return 0" do
-      assert Yahtzee.score(:twos, [6, 1, 3, 4, 1]) == 0
+      assert Yahtzee.score(2, [6, 1, 3, 4, 1]) == 0
     end
 
     test "calculate" do
-      assert Yahtzee.score(:twos, [4, 4, 4, 2, 2]) == 4
+      assert Yahtzee.score(2, [4, 4, 4, 2, 2]) == 4
     end
   end
 
   describe "score/2 - ones" do
     test "return 0" do
-      assert Yahtzee.score(:ones, [6, 2, 3, 2, 2]) == 0
+      assert Yahtzee.score(1, [6, 2, 3, 2, 2]) == 0
     end
 
     test "calculate" do
-      assert Yahtzee.score(:ones, [4, 4, 4, 1, 1]) == 2
+      assert Yahtzee.score(1, [4, 4, 4, 1, 1]) == 2
     end
   end
 
@@ -171,5 +171,4 @@ defmodule YahtzeeTest do
       assert Yahtzee.score(:full_house, [5, 5, 2, 2, 2]) == 16
     end
   end
-
 end
